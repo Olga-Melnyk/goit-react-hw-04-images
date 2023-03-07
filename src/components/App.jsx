@@ -7,7 +7,7 @@ import { ImageGallery } from './ImageGallery/ImageGallery';
 export class App extends Component {
   state = {
     textSearch: '',
-    page: 1,
+    page: 11,
   };
 
   handleSubmit = textSearch => {
