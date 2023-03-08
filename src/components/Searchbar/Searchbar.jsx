@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import PropTypes from 'prop-types';
 
@@ -11,45 +11,41 @@ import {
   SearchInput,
 } from './Searchbar.styled';
 
-export class SearchBar extends Component {
-  state = {
-    value: '',
+export const SearchBar = ({ onSearch }) => {
+  const [value, setValue] = useState('');
+
+  const handleChange = ({ target: { value } }) => {
+    setValue(value);
   };
 
-  handleChange = ({ target: { value } }) => {
-    this.setState({ value });
-  };
-
-  handleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    if (!this.state.value) {
+    if (!value) {
       return toast.error('Please write a word to search for');
     }
-    this.props.onSearch(this.state.value);
-    this.setState({ value: '' });
+    onSearch(value);
+    setValue('');
   };
 
-  render() {
-    return (
-      <Searchbar>
-        <SearchForm onSubmit={this.handleSubmit}>
-          <SearchButton type="submit">
-            <BsSearch />
-          </SearchButton>
+  return (
+    <Searchbar>
+      <SearchForm onSubmit={handleSubmit}>
+        <SearchButton type="submit">
+          <BsSearch />
+        </SearchButton>
 
-          <SearchInput
-            type="text"
-            autoComplete="off"
-            autoFocus
-            placeholder="Search images and photos"
-            value={this.state.value}
-            onChange={this.handleChange}
-          />
-        </SearchForm>
-      </Searchbar>
-    );
-  }
-}
+        <SearchInput
+          type="text"
+          autoComplete="off"
+          autoFocus
+          placeholder="Search images and photos"
+          value={value}
+          onChange={handleChange}
+        />
+      </SearchForm>
+    </Searchbar>
+  );
+};
 
 SearchBar.propTypes = {
   onSearch: PropTypes.func.isRequired,
